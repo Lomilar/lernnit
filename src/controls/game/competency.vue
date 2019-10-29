@@ -5,77 +5,10 @@
             <button class="inline transparent" v-else v-on:click="collapse = !collapse"><i class="mdi mdi-18px mdi-menu-down" aria-hidden="true"></i></button>
         </span>
         <div>
-                <div class="tile">
+            <div class="tile">
                 <div class="section pbottom">
-                    <div v-observe-visibility="{callback: initialize,once: true}">{{ name }}</div>
+                    <div v-observe-visibility="{callback: initialize,once: true}"><strong class="antitile"><small>{{ type }}</small></strong> {{ name }}</div>
                     <small v-if="description" class="block">{{ description }}</small>
-                </div>
-                <div class="buttons btop">
-                    <span v-if="subject != null">
-                        <button class="inline" v-if="competent == null">
-                            <i class="mdi mdi-18px mdi-loading mdi-spin" aria-hidden="true"></i>
-                            Loading...</button>
-                        <button class="inline" v-if="competent == true" v-on:click="unclaimCompetence" :title="unclaimCompetencePhrase">
-                            <i class="mdi mdi-18px mdi-checkbox-marked-circle-outline" aria-hidden="true"></i> {{unclaimCompetencePhraseShort}}</button>
-                        <button class="inline" v-if="competent == false" v-on:click="claimCompetence" :title="claimCompetencePhrase">
-                            <i class="mdi mdi-18px mdi-checkbox-blank-circle-outline" aria-hidden="true"></i> {{claimCompetencePhraseShort}}</button>
-                        <button class="inline" v-if="incompetent == null">
-                            <i class="mdi mdi-18px mdi-loading mdi-spin" aria-hidden="true"></i> Loading...</button>
-                        <button class="inline" v-if="incompetent == true" v-on:click="unclaimIncompetence" :title="unclaimIncompetencePhrase">
-                            <i class="mdi mdi-18px mdi-close-box-outline" aria-hidden="true"></i> {{unclaimIncompetencePhraseShort}}</button>
-                        <button class="inline" v-if="incompetent == false" v-on:click="claimIncompetence" :title="claimIncompetencePhrase">
-                            <i class="mdi mdi-18px mdi-checkbox-blank-outline" aria-hidden="true"></i> {{claimIncompetencePhraseShort}}</button>
-                    </span>
-                    <span v-if="subject">
-                        <span v-if="frameworkUri">
-                            <button class="inline" v-if="computedState == null" v-on:click="getEstimatedCompetence" >
-                                <i class="mdi mdi-18px mdi-loading mdi-spin" aria-hidden="true"></i> Loading...</button>
-                            <button class="inline" v-if="estimatedCompetenceUnknown" v-on:click="getEstimatedCompetence" :title="estimatedCompetenceTitle">
-                                <i class="mdi mdi-18px mdi-help-circle" aria-hidden="true"></i> Unknown</button>
-                            <button class="inline" v-if="estimatedCompetenceIndeterminant" style="color:purple;" v-on:click="getEstimatedCompetence" :title="estimatedCompetenceTitle">
-                                <i class="mdi mdi-18px mdi-flash-circle" aria-hidden="true"></i> Conflict</button>
-                            <button class="inline" v-if="estimatedCompetenceTrue" style="color:green;" v-on:click="getEstimatedCompetence" :title="estimatedCompetenceTitle">
-                                <i class="mdi mdi-18px mdi-check-circle" aria-hidden="true"></i> Can</button>
-                            <button class="inline" v-if="estimatedCompetenceFalse" style="color:red;" v-on:click="getEstimatedCompetence" :title="estimatedCompetenceTitle">
-                                <i class="mdi mdi-18px mdi-diameter-variant" aria-hidden="true"></i> Can&apos;t</button>
-                        </span>
-                        <span v-if="canEditSubject">
-                            <button class="inline" v-if="isGoal == null"><i class="mdi mdi-18px mdi-loading mdi-spin" aria-hidden="true"></i></button>
-                            <button class="inline" v-if="isGoal == false" v-on:click="makeGoal" :title="makeGoalPhrase">
-                                <i class="mdi mdi-18px mdi-bullseye" aria-hidden="true"></i> My Goal</button>
-                            <button class="inline" v-if="isGoal == true" v-on:click="unmakeGoal" :title="unmakeGoalPhrase">
-                                <i class="mdi mdi-18px mdi-bullseye-arrow" style="color:green;" aria-hidden="true"></i> Goal</button>
-                        </span>
-                        <button v-if="showResources" class="inline wider" v-on:click="setCompetency" title="View Learning Resources for this topic.">
-                            <i class="mdi mdi-18px mdi-book-open" aria-hidden="true"></i>{{ countPhrase }}</button>
-                    </span>
-                    <span v-if="showBadging && (competent == true || incompetent == true)">
-                        <button class="inline" v-if="badged == true" style="color:green;" v-on:click="unbadgeAssertion" title="Remove the badge for my claim.">
-                            <i class="mdi mdi-18px mdi-shield" aria-hidden="true"></i> Badge</button>
-                        <button class="inline wider" v-if="badged == true"><i class="mdi mdi-18px mdi-shield-link-variant" style="color:darkblue;" aria-hidden="true"></i>
-                        <a class="inline" style="color:darkblue;" target="_blank" :href="badgeLink">Badge Link</a></button>
-                        <button class="inline" v-if="badged == false" style="color:gray;" v-on:click="badgeAssertion" title="Issue a badge for my claim.">
-                            <i class="mdi mdi-18px mdi-shield-outline" aria-hidden="true"></i> Badge</button>
-                    </span>
-                </div>
-                <div class="btop" v-if="competent == true || incompetent == true">
-                    <input class="inline antitile" style="width:25rem;max-width:100%" v-model="evidenceInput"
-                        v-on:keyup.enter="evidenceAssertion" v-on:keyup.esc="evidenceInput = null" :placeholder="becausePhrase" title="Text or URL Link">
-                </div>
-                <small class="buttons" v-if="evidenceText && (competent != false || incompetent != false)">
-                    <ul>
-                        <li class="pbottom" v-for="evidence in evidenceText" v-bind:key="evidence">
-                            <span v-on:click="unevidenceAssertion(evidence.original)" style="float:right;cursor:pointer;">X</span>
-                            <a v-if="evidence.url" :href="evidence.url" target="_blank">{{evidence.text}}</a>
-                            <span v-else>{{evidence.text}}</span>
-                        </li>
-                    </ul>
-                </small>
-                <div v-if="assertionsByOthers && assertionsByOthers.length > 0" v-on:click="iconAssertion = !iconAssertion" class="assertions section btop ptop">
-                <span v-if="iconAssertion && assertionsByOthers && assertionsByOthers.length > 0" :title="otherClaimsPhrase">
-                    <i class="mdi mdi-account-group mdi-18px" aria-hidden="true"/>: </span>
-                <assertion :icon="iconAssertion" v-for="item in assertionsByOthers"
-                v-bind:key="uri+item.id" :short="true" :uri="item.id" title="Assertion from elsewhere"></assertion>
                 </div>
             </div>
             <ul v-if="collapse == false || collapse == null">
@@ -92,15 +25,6 @@
     flex-direction: row;
     width:100%;
 }
-.competency .assertions {
-    font-size: small;
-}
-
-.competency .assertion img {
-    clip-path: circle(11px at center);
-    margin-right: .0rem;
-}
-
 .competency > span {
     position: relative;
     width: 0px;
@@ -114,7 +38,7 @@
 
 .competency>div>ul>li:before {
     content: '';
-    height: 3rem;
+    height: 1.5rem;
     width: 2rem;
     border-bottom: 2px solid black;
     top: 0rem;
@@ -212,66 +136,6 @@ export default {
                 return this.resources.length;
             }
         },
-        estimatedCompetenceTrue: {
-            get: function() {
-                if (this.competency == null) return null;
-                if (this.computedState == null) return null;
-                if (this.computedState === 0) return null;
-                var msc = this.computedState.getMetaStateCompetency(this.competency);
-                if (msc != null) {
-                    if (msc.negativeAssertion == null && msc.positiveAssertion != null) {
-                        // this.estimatedCompetenceTitle = "The system believes you hold this competency. Click for details.";
-                        return true;
-                    }
-                }
-                return null;
-            }
-        },
-        estimatedCompetenceFalse: {
-            get: function() {
-                if (this.competency == null) return null;
-                if (this.computedState == null) return null;
-                if (this.computedState === 0) return null;
-                var msc = this.computedState.getMetaStateCompetency(this.competency);
-                if (msc != null) {
-                    if (msc.negativeAssertion != null && msc.positiveAssertion == null) {
-                        // this.estimatedCompetenceTitle = "The system believes you do not hold this competency. Click for details.";
-                        return true;
-                    }
-                }
-                return null;
-            }
-        },
-        estimatedCompetenceIndeterminant: {
-            get: function() {
-                if (this.competency == null) return null;
-                if (this.computedState == null) return null;
-                if (this.computedState === 0) return null;
-                var msc = this.computedState.getMetaStateCompetency(this.competency);
-                if (msc != null) {
-                    if (msc.negativeAssertion != null && msc.positiveAssertion != null) {
-                        // this.estimatedCompetenceTitle = "There is conflicting evidence that you hold this competency. Click for details.";
-                        return true;
-                    }
-                }
-                return null;
-            }
-        },
-        estimatedCompetenceUnknown: {
-            get: function() {
-                if (this.competency == null) return null;
-                if (this.computedState == null) return null;
-                if (this.computedState === 0) return null;
-                var msc = this.computedState.getMetaStateCompetency(this.competency);
-                if (msc != null) {
-                    if (msc.negativeAssertion == null && msc.positiveAssertion == null) {
-                        // this.estimatedCompetenceTitle = "It is not known if you hold this competency. Click for details.";
-                        return true;
-                    }
-                }
-                return null;
-            }
-        },
         competency: {
             get: function() {
                 return this.competencyValue;
@@ -302,6 +166,13 @@ export default {
                 if (this.uri == null) return "Invalid Competency";
                 if (this.competency == null) return "Loading...";
                 return this.competency.getName();
+            }
+        },
+        type: {
+            get: function() {
+                if (this.uri == null) return "Invalid Competency";
+                if (this.competency == null) return "Loading...";
+                return Thing.getDisplayStringFrom(this.competency["dcterms:type"]);
             }
         },
         description: {

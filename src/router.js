@@ -13,19 +13,19 @@ export default new Router({
             component: () => import(/* webpackChunkName: "timelinePage" */ './pages/0Timeline.vue')
         },
         {
-            path: '/frameworks',
-            name: 'frameworks',
-            component: () => import(/* webpackChunkName: "frameworksPage" */ './pages/1FrameworksPage.vue')
+            path: '/people',
+            name: 'people',
+            component: () => import(/* webpackChunkName: "frameworksPage" */ './pages/game/people.vue')
         },
         {
-            path: '/framework',
-            name: 'framework',
-            component: () => import(/* webpackChunkName: "frameworkPage" */ './pages/2FrameworkPage.vue')
+            path: '/research',
+            name: 'research',
+            component: () => import(/* webpackChunkName: "frameworkPage" */ './pages/game/research.vue')
         },
         {
-            path: '/resources',
-            name: 'resources',
-            component: () => import(/* webpackChunkName: "resourcesPage" */ './pages/3ResourcesPage.vue')
+            path: '/work',
+            name: 'work',
+            component: () => import(/* webpackChunkName: "resourcesPage" */ './pages/game/work.vue')
         },
         {
             path: '/goals',

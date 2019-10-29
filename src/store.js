@@ -35,7 +35,10 @@ export const store = new Vuex.Store({
         selectedFramework: null,
         selectedCompetency: null,
         selectedResource: null,
-        selectedJobPosting: null
+        selectedJobPosting: null,
+        gamePersons: {
+            "Pat Wark": {}
+        }
     },
     mutations: {
         setAssertions(state, as) {

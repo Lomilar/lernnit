@@ -74,14 +74,16 @@ export default {
             if (queryParams.frameworkId != null) {
                 me.$store.commit("selectedFramework", EcFramework.getBlocking(queryParams.frameworkId));
             } else {
-                me.$store.commit("selectedFramework",
-                    localStorage.selectedFramework == null
-                        ? null
-                        : EcFramework.getBlocking(localStorage.selectedFramework));
-                me.$store.commit("selectedCompetency",
-                    localStorage.selectedCompetency == null
-                        ? null
-                        : EcCompetency.getBlocking(localStorage.selectedCompetency));
+                if (localStorage.selectedFramework != null)
+                    me.$store.commit("selectedFramework",
+                        localStorage.selectedFramework == null
+                            ? null
+                            : EcFramework.getBlocking(localStorage.selectedFramework));
+                if (localStorage.selectedCompetency != null)
+                    me.$store.commit("selectedCompetency",
+                        localStorage.selectedCompetency == null
+                            ? null
+                            : EcCompetency.getBlocking(localStorage.selectedCompetency));
             }
             EcRemote.getExpectingString(window.repo.selectedServer, "badge/pk", function(badgePk) {
                 me.$store.commit("badgePk", EcPk.fromPem(badgePk));

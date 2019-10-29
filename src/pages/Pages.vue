@@ -7,7 +7,7 @@
         <nav class="navbar is-info is-fixed-top" role="navigation" aria-label="main-navigation">
             <div class="navbar-brand">
                 <a class="navbar-item">
-                    CaSS Learning Center
+                    The Fun Game
                 </a>
             </div>
             <!-- nav bar tablet and mobile drop down side navigation -->
@@ -192,7 +192,7 @@ ul ul {
     background-color: white;
     border-radius: .25rem;
     margin-top: .25rem;
-    padding: .75rem;
+    padding: .1rem .1rem .1rem .5rem;
     flex-direction:column;
 }
 
@@ -390,60 +390,31 @@ export default {
             showSideBar: queryParams.action == null,
             navItems: [
                 {
-                    title: "Timeline",
+                    title: "Nada",
                     action: "/",
                     tasks: "",
                     icon: "mdi-timeline-text",
                     disabled: false
                 },
                 {
-                    title: "Subject Areas",
-                    action: "frameworks",
+                    title: "Research",
+                    action: "research",
                     tasks: "",
                     icon: "mdi-book-open-page-variant",
                     disabled: false
                 },
                 {
-                    title: "Topic Area",
-                    action: "framework",
+                    title: "Work",
+                    action: "work",
                     tasks: "",
                     icon: "mdi-book-open",
                     disabled: false
                 },
                 {
-                    title: "Learning Resources",
-                    action: "resources",
-                    tasks: "",
-                    icon: "mdi-file",
-                    disabled: false
-                },
-                {
-                    title: "My Goals",
-                    action: "goals",
-                    tasks: "",
-                    icon: "mdi-bullseye",
-                    disabled: false
-                },
-
-                {
-                    title: "My Contacts",
-                    action: "profiles",
-                    tasks: "",
-                    icon: "mdi-account-group",
-                    disabled: false
-                },
-                {
-                    title: "Find People",
+                    title: "People",
                     action: "people",
                     tasks: "",
-                    icon: "mdi-account-search",
-                    disabled: false
-                },
-                {
-                    title: "Jobs, Gigs, Positions",
-                    action: "jobPostings",
-                    tasks: "",
-                    icon: "mdi-briefcase",
+                    icon: "mdi-file",
                     disabled: false
                 }
             ]
